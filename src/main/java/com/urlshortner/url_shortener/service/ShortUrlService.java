@@ -1,6 +1,8 @@
 package com.urlshortner.url_shortener.service;
 
 import com.urlshortner.url_shortener.entity.ShortUrl;
+import com.urlshortner.url_shortener.exception.ShortUrlInactiveException;
+import com.urlshortner.url_shortener.exception.ShortUrlNotFoundException;
 import com.urlshortner.url_shortener.repository.ShortUrlRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -49,10 +51,10 @@ public class ShortUrlService {
 
         ShortUrl shortUrl = repository.findByShortCode(shortCode)
                 .orElseThrow(() ->
-                        new RuntimeException("Short URL not found"));
+                        new ShortUrlNotFoundException("Short URL not found"));
 
         if (!shortUrl.isActive()) {
-            throw new RuntimeException("Short URL is inactive");
+            throw new ShortUrlInactiveException("Short URL is inactive");
         }
 
         return shortUrl.getOriginalUrl();
