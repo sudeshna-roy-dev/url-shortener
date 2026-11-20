@@ -44,17 +44,4 @@ public class ShortUrlService {
                 "Unable to generate a unique short code. Please try again."
         );
     }
-
-    public String getOriginalUrl(String shortCode) {
-
-        ShortUrl shortUrl = repository.findByShortCode(shortCode)
-                .orElseThrow(() ->
-                        new RuntimeException("Short URL not found"));
-
-        if (!shortUrl.isActive()) {
-            throw new RuntimeException("Short URL is inactive");
-        }
-
-        return shortUrl.getOriginalUrl();
-    }
 }
